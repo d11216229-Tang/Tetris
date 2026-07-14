@@ -14,6 +14,14 @@ pip install pygame
 python tetris.py
 ```
 
+## html_Tetris (HTML/JS/PHP)
+
+```bash
+php -S localhost:8000
+```
+
+然後開啟 `http://localhost:8000/index.php`。
+
 ## Controls
 
 - 左移：`A` 或 `←`
