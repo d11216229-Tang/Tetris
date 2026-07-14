@@ -28,6 +28,10 @@ WORKING-STORAGE SECTION.
 01 WS-INPUT.
    05 WS-CMD-RAW                PIC X(20).
    05 WS-CMD                    PIC X(20).
+   05 WS-ARROW-UP               PIC X(3) VALUE X"1B5B41".
+   05 WS-ARROW-DOWN             PIC X(3) VALUE X"1B5B42".
+   05 WS-ARROW-RIGHT            PIC X(3) VALUE X"1B5B43".
+   05 WS-ARROW-LEFT             PIC X(3) VALUE X"1B5B44".
 
 01 WS-LOOP-VARS.
    05 WS-R                      PIC S99.
@@ -117,23 +121,22 @@ HANDLE-COMMAND.
         EXIT PARAGRAPH
     END-IF
 
-    EVALUATE WS-CMD
-        WHEN "A"
+    EVALUATE TRUE
+        WHEN WS-CMD = "A"
+             OR WS-CMD = "LEFT"
+             OR WS-CMD-RAW(1:3) = WS-ARROW-LEFT
             PERFORM TRY-MOVE-LEFT
-        WHEN "LEFT"
-            PERFORM TRY-MOVE-LEFT
-        WHEN "D"
+        WHEN WS-CMD = "D"
+             OR WS-CMD = "RIGHT"
+             OR WS-CMD-RAW(1:3) = WS-ARROW-RIGHT
             PERFORM TRY-MOVE-RIGHT
-        WHEN "RIGHT"
-            PERFORM TRY-MOVE-RIGHT
-        WHEN "W"
+        WHEN WS-CMD = "W"
+             OR WS-CMD = "UP"
+             OR WS-CMD-RAW(1:3) = WS-ARROW-UP
             PERFORM TRY-ROTATE
-        WHEN "UP"
-            PERFORM TRY-ROTATE
-        WHEN "S"
-            MOVE 2 TO WS-DROP-STEPS
-            PERFORM APPLY-DROP-STEPS
-        WHEN "DOWN"
+        WHEN WS-CMD = "S"
+             OR WS-CMD = "DOWN"
+             OR WS-CMD-RAW(1:3) = WS-ARROW-DOWN
             MOVE 2 TO WS-DROP-STEPS
             PERFORM APPLY-DROP-STEPS
         WHEN OTHER
